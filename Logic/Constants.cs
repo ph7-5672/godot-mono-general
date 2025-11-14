@@ -5,5 +5,5 @@ namespace GodotMonoGeneral.Logic;
 /// </summary>
 public class Constants
 {
-
+    public const int ENTITY_MAX_COUNT = 4096;
 }
