@@ -1,3 +1,21 @@
-[gd_scene format=3 uid="uid://gg8of1xj2fbv"]
+[gd_scene load_steps=2 format=3 uid="uid://gg8of1xj2fbv"]
+
+[ext_resource type="Script" uid="uid://c8a8e0dglvmqv" path="res://View/Test.cs" id="1_f2eu3"]
 
 [node name="Test" type="CanvasLayer"]
+script = ExtResource("1_f2eu3")
+
+[node name="HFlowContainer" type="HFlowContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CreateInventoryButton" type="Button" parent="HFlowContainer"]
+layout_mode = 2
+text = "创建背包"
+
+[node name="CreateSlotButton" type="Button" parent="HFlowContainer"]
+layout_mode = 2
+text = "添加格子"
+
+[connection signal="pressed" from="HFlowContainer/CreateInventoryButton" to="." method="CreateInventory"]
+[connection signal="pressed" from="HFlowContainer/CreateSlotButton" to="." method="CreateSlot"]
