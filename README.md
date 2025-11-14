@@ -9,16 +9,18 @@ godot_mono版开发泛用模板。也可以看作一个简易框架，提供了�
 例如一个背包界面，每个背包格子都会调用`GetSlotData(index)`函数来获取数据。
 
 ### 逻辑层（Logic Layer）
-逻辑层分为公开类、其他模块类以及一些工具类。
-公开类提供访问函数，只注重输入和返回数据，具体的逻辑在模块类中。
-主要模块：
-- 存读档（SaveLoad）
+逻辑层分为一个门面类（LogicFacade）和ECS（Entity-Component-System）。
+门面类提供访问函数，只注重输入和返回数据，具体的逻辑在ECS中。
+主要功能模块：
 - 仓库/背包（Inventory）
+- 存读档（SaveLoad）
 - 成就（Achievement）
 
-常用工具类：
-- 单例工厂（Factory）
-- 
+### 其他工具类：
+- 单例工厂（SingletonFactory）
+- 文件流读写（IOHelper）
+
+
 
 ## 代码规范
 ### 常量和枚举
