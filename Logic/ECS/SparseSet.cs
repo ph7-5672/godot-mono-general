@@ -6,7 +6,7 @@ using System;
 /// 内存高效的ECS存储。
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class SparseSet<T> where T : struct
+public class SparseSet<T> : ISparseSet where T : struct
 {
     /// <summary>
     /// 紧凑存储实际数据。
@@ -22,32 +22,28 @@ public class SparseSet<T> where T : struct
 
     public int Count => count;
 
-    public SparseSet(int capacity = Constants.ENTITY_MAX_COUNT)
+    public SparseSet(int capacity)
     {
         components = new T[capacity];
         indics = new int[capacity];
         Array.Fill(indics, -1);
     }
 
+    public SparseSet() : this(Constants.ENTITY_MAX_COUNT)
+    {
+    }
+
 
     /// <summary>
-    /// 添加或修改组件。
+    /// 添加组件。
     /// </summary>
     /// <param name="entityId"></param>
     /// <param name="component"></param>
-    public void AddOrUpdate(int entityId, T component)
+    public void Add(int entityId, ref T component)
     {
-        int index;
-        if (Has(entityId))
-        {
-            index = indics[entityId];
-        }
-        else
-        {
-            index = count;
-            indics[entityId] = index;
-            ++count;
-        }
+        var index = count;
+        indics[entityId] = index;
+        ++count;
         components[index] = component;
     }
 
@@ -66,16 +62,26 @@ public class SparseSet<T> where T : struct
     /// </summary>
     /// <param name="entityId"></param>
     /// <returns></returns>
-    public T Get(int entityId)
+    public ref T Get(int entityId)
     {
-        if (!Has(entityId))
-        {
-            return default;
-        }
         var index = indics[entityId];
-        return components[index];
+        return ref components[index];
     }
 
+    /// <summary>
+    /// 删除组件。
+    /// </summary>
+    /// <param name="entityId"></param>
+    public void Delete(int entityId)
+    {
+        indics[entityId] = -1;
+    }
+
+    /// <summary>
+    /// 根据索引获取组件。
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
     public T this[int index]
     {
         get

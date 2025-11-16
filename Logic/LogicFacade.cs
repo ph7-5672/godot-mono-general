@@ -11,6 +11,7 @@ public class LogicFacade
 {
     private LogicFacade() { }
 
+    private static ECSWorld World => SingletonFactory.GetSingleton<ECSWorld>();
 
     private static readonly InventorySystem inventory = SingletonFactory.GetSingleton<InventorySystem>();
 
