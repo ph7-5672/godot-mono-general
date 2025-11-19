@@ -1,6 +1,7 @@
 namespace GodotMonoGeneral.Logic.ECS;
 
 using System;
+using System.Collections.Generic;
 
 /// <summary>
 /// 内存高效的ECS存储。
@@ -18,6 +19,9 @@ public class SparseSet<T> : ISparseSet where T : struct
     /// </summary>
     private readonly int[] indics;
 
+    /// <summary>
+    /// 激活的组件数量。
+    /// </summary>
     private int count;
 
     public int Count => count;
@@ -75,6 +79,22 @@ public class SparseSet<T> : ISparseSet where T : struct
     public void Delete(int entityId)
     {
         indics[entityId] = -1;
+    }
+
+    /// <summary>
+    /// 获取所有激活的组件。
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerable<int> GetEntities()
+    {
+        for (int i = 0; i < indics.Length; i++)
+        {
+            var index = indics[i];
+            if (index != -1)
+            {
+                yield return i;
+            }
+        }
     }
 
     /// <summary>

@@ -4,24 +4,18 @@ using GodotMonoGeneral.Logic;
 public partial class Test : CanvasLayer
 {
 
-    public void CreateInventory()
+    public override void _Ready()
     {
-        var inventoryId = LogicFacade.CreateInventory(0, "测试背包");
-        GD.Print($"创建背包成功，id：{inventoryId}");
+        base._Ready();
+        var inventoryId = LogicFacade.CreateInventory(999, "Test");
+        LogicFacade.CreateSlotsToInventory(inventoryId, 10);
+
+        var packedScene = GD.Load<PackedScene>("res://View/InventoryTest.tscn");
+        var test = packedScene.Instantiate();
+        test.SetMeta("inventoryId", inventoryId);
+        AddChild(test);
     }
 
-    public void CreateSlot()
-    {
-        var slotIds = LogicFacade.CreateSlotsToInventory(0);
-        if (slotIds.Length > 0)
-        {
-            GD.Print($"创建格子成功，id：{slotIds[0]}");
-        }
-        else
-        {
-            GD.Print($"创建格子失败");
-        }
-    }
 
 
 }

@@ -6,6 +6,29 @@ public class InventorySystem
 {
     private static ECSWorld World => SingletonFactory.GetSingleton<ECSWorld>();
 
+
+    public bool TryGetSlotData(int inventoryId, int index, out int slotId, out SlotData slotData)
+    {
+        slotId = -1;
+        slotData = default;
+        if (!World.HasComponent<InventoryData>(inventoryId)) // 验证仓库/背包id。
+        {
+            return false;
+        }
+        var entities = World.GetEntities<SlotData>(); // 获取所有格子实体。
+        foreach (var entityId in entities)
+        {
+            var s = World.GetComponent<SlotData>(entityId);
+            if (s.inventoryId == inventoryId && s.index == index)
+            {
+                slotData = s;
+                slotId = entityId;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int CreateInventory(int ownerId, string name)
     {
         var inventoryId = World.CreateEntity(); // 新实体。
@@ -21,23 +44,24 @@ public class InventorySystem
 
     public int[] CreateSlotsToInventory(int inventoryId, int count, int capacity)
     {
-        if (!World.HasComponent<InventoryData>(inventoryId))
+        if (!World.HasComponent<InventoryData>(inventoryId)) // 验证仓库/背包id。
         {
             return [];
         }
         var result = new int[count];
-        var inventory = World.GetComponent<InventoryData>(inventoryId);
-        for (int i = 0; i < count; ++i)
+        ref var inventory = ref World.GetComponent<InventoryData>(inventoryId); // 获取仓库/背包数据。
+        for (int i = 0; i < count; ++i) // 遍历数据
         {
-            var slotId = World.CreateEntity();
-            var slotData = new SlotData()
+            var slotId = World.CreateEntity(); // 新格子实体
+            var slotData = new SlotData() // 新格子数据
             {
                 inventoryId = inventoryId,
-                itemId = -1,
+                itemId = -1, // 物品id默认-1，表示不存在。
                 count = 0,
-                capacity = capacity
+                capacity = capacity,
+                index = inventory.slotCount + i // 索引自动增加。
             };
-            World.AddComponent(slotId, ref slotData);
+            World.AddComponent(slotId, ref slotData); // 添加实体
             result[i] = slotId;
         }
         inventory.slotCount += count;
@@ -75,6 +99,10 @@ public struct SlotData
     /// 所属仓库/背包ID。
     /// </summary>
     public int inventoryId;
+    /// <summary>
+    /// 索引。
+    /// </summary>
+    public int index;
     /// <summary>
     /// 物品ID。
     /// </summary>

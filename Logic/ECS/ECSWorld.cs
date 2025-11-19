@@ -100,5 +100,16 @@ public class ECSWorld
         sparseSet.Delete(entityId);
     }
 
+    /// <summary>
+    /// 获取包含指定组件的所有实体id。
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public IEnumerable<int> GetEntities<T>() where T : struct
+    {
+        var sparseSet = RegisterComponent<T>();
+        return sparseSet.GetEntities();
+    }
+
    
 }

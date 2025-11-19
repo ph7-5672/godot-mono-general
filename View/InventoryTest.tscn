@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://di771bqtr1hgc"]
+
+[ext_resource type="Script" uid="uid://cnacvnh3fjrx0" path="res://View/InventorySlot.cs" id="1_6vlan"]
+
+[node name="InventoryTest" type="CanvasLayer"]
+
+[node name="GridContainer" type="GridContainer" parent="."]
+
+[node name="Slot" type="Control" parent="GridContainer"]
+layout_mode = 2
+script = ExtResource("1_6vlan")
