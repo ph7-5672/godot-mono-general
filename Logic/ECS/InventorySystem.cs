@@ -4,29 +4,29 @@ namespace GodotMonoGeneral.Logic.ECS;
 
 public class InventorySystem
 {
-    private static ECSWorld World => SingletonFactory.GetSingleton<ECSWorld>();
+    private ECSWorld World => SingletonFactory.GetSingleton<ECSWorld>();
 
-
-    public bool TryGetSlotData(int inventoryId, int index, out int slotId, out SlotData slotData)
+    public int GetSlotId(int inventoryId, int index)
     {
-        slotId = -1;
-        slotData = default;
         if (!World.HasComponent<InventoryData>(inventoryId)) // 验证仓库/背包id。
         {
-            return false;
+            return -1;
         }
         var entities = World.GetEntities<SlotData>(); // 获取所有格子实体。
-        foreach (var entityId in entities)
+        foreach (var slotId in entities)
         {
-            var s = World.GetComponent<SlotData>(entityId);
+            var s = World.GetComponent<SlotData>(slotId);
             if (s.inventoryId == inventoryId && s.index == index)
             {
-                slotData = s;
-                slotId = entityId;
-                return true;
+                return slotId;
             }
         }
-        return false;
+        return -1;
+    }
+
+    public SlotData GetSlotData(int slotId)
+    {
+        return World.GetComponent<SlotData>(slotId);
     }
 
     public int CreateInventory(int ownerId, string name)

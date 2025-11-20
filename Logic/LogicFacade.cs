@@ -14,16 +14,24 @@ public class LogicFacade
     private static InventorySystem Inventory => SingletonFactory.GetSingleton<InventorySystem>();
 
     /// <summary>
-    /// 获取指定仓库/背包下指定的格子数据。
+    /// 根据索引获取指定仓库/背包下的格子id。
     /// </summary>
-    /// <param name="inventoryId">指定仓库/背包id</param>
-    /// <param name="index">指定索引</param>
-    /// <param name="slotId">返回格子id</param>
-    /// <param name="slotData">返回格子数据</param>
-    /// <returns>查询结果是否存在</returns>
-    public static bool TryGetSlotData(int inventoryId, int index, out int slotId, out SlotData slotData)
+    /// <param name="inventoryId"></param>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    public static int GetSlotId(int inventoryId, int index)
     {
-        return Inventory.TryGetSlotData(inventoryId, index, out slotId, out slotData);
+        return Inventory.GetSlotId(inventoryId, index);
+    }
+
+    /// <summary>
+    /// 获取指定格子数据。
+    /// </summary>
+    /// <param name="slotId"></param>
+    /// <returns></returns>
+    public static SlotData GetSlotData(int slotId)
+    {
+        return Inventory.GetSlotData(slotId);
     }
 
     /// <summary>

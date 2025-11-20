@@ -7,40 +7,37 @@ namespace GodotMonoGeneral.View;
 /// <summary>
 /// 背包格子。
 /// </summary>
-public partial class InventorySlot : Control, IViewController, IDivisionNode
+public partial class InventorySlot : Control, IViewController
 {
-
-    int slotId;
-    InventorySlot last;
+    int slotId = -1;
 
     public override void _Ready()
     {
         base._Ready();
-        Refresh();
+        CallDeferred("Refresh");
     }
-
 
     public void Refresh()
     {
-        if (Owner == null && last != null)
-        {
-            Owner = last.Owner;
-        }
+        Visible = false;
         if (!Owner.HasMeta("inventoryId")) // 以Owner（预制场景的根节点）的元数据作为数据共享。
         {
             return;
         }
-        var inventoryId = Owner.GetMeta("inventoryId").AsInt32(); // 获取背包id用以查询数据。
-        var index = GetIndex();
-        if (!LogicFacade.TryGetSlotData(inventoryId, index, out var id, out var data))
+        if (slotId == -1) // 尝试获取格子id。
+        {
+            var inventoryId = Owner.GetMeta("inventoryId").AsInt32(); // 获取背包id用以查询数据。
+            var index = GetIndex();
+            slotId = LogicFacade.GetSlotId(inventoryId, index);
+        }
+        if (slotId == -1)
         {
             return;
         }
-        slotId = id;
-        GD.Print($"index:{data.index},itemId:{data.itemId}");
-        // 分裂。
-        var next = this.Divide();
-        next.last = this;
+        Visible = true;
+        var data = LogicFacade.GetSlotData(slotId);
+        var next = this.Divide(); // 分裂。
+        next.Owner = Owner; // 设置数据共享。
     }
 
 }

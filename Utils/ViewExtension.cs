@@ -1,23 +1,13 @@
 using Godot;
 
-namespace GodotMonoGeneral.View.Api;
-
-/// <summary>
-/// 可分裂节点。
-/// </summary>
-public interface IDivisionNode
-{
-    
-}
-
-public static partial class ViewExtension
+public static class ViewExtension
 {
     /// <summary>
     /// 扩展方法，分裂。
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="node"></param>
-    public static T Divide<T>(this T node) where T : Node, IDivisionNode
+    public static T Divide<T>(this T node) where T : Node
     {
         var parent = node.GetParent();
         if (parent == null)
@@ -25,7 +15,7 @@ public static partial class ViewExtension
             return null;
         }
         var next = node.Duplicate();
-        parent.CallDeferred("add_child", next);
+        parent.AddChild(next);
         return next as T;
     }
 }

@@ -8,7 +8,7 @@ public partial class Test : CanvasLayer
     {
         base._Ready();
         var inventoryId = LogicFacade.CreateInventory(999, "Test");
-        LogicFacade.CreateSlotsToInventory(inventoryId, 10);
+        LogicFacade.CreateSlotsToInventory(inventoryId, 16);
 
         var packedScene = GD.Load<PackedScene>("res://View/InventoryTest.tscn");
         var test = packedScene.Instantiate();
