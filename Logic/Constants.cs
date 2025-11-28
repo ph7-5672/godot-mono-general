@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace GodotMonoGeneral.Logic;
 
 /// <summary>
@@ -5,5 +7,9 @@ namespace GodotMonoGeneral.Logic;
 /// </summary>
 public class Constants
 {
-    public const int ENTITY_MAX_COUNT = 4096;
+    /// <summary>
+    /// 游戏存档槽位。
+    /// </summary>
+    public const int GAME_SAVE_CAPACITY = 8;
+    public static readonly JsonSerializerOptions JsonSerializerOptions = new(){IncludeFields = true};
 }

@@ -2,6 +2,7 @@ namespace GodotMonoGeneral.Logic.ECS;
 
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 /// <summary>
 /// 内存高效的ECS存储。
@@ -9,6 +10,8 @@ using System.Collections.Generic;
 /// <typeparam name="T"></typeparam>
 public class SparseSet<T> : ISparseSet where T : struct
 {
+    public const int ENTITY_MAX_COUNT = 8192;
+
     /// <summary>
     /// 紧凑存储实际数据。
     /// </summary>
@@ -26,15 +29,11 @@ public class SparseSet<T> : ISparseSet where T : struct
 
     public int Count => count;
 
-    public SparseSet(int capacity)
+    public SparseSet()
     {
-        components = new T[capacity];
-        indics = new int[capacity];
-        Array.Fill(indics, -1);
-    }
-
-    public SparseSet() : this(Constants.ENTITY_MAX_COUNT)
-    {
+        components = new T[ENTITY_MAX_COUNT];
+        indics = new int[ENTITY_MAX_COUNT];
+        Clear();
     }
 
 
@@ -81,8 +80,15 @@ public class SparseSet<T> : ISparseSet where T : struct
         indics[entityId] = -1;
     }
 
+    public void Clear()
+    {
+        Array.Fill(indics, -1);
+        Array.Fill(components, new T());
+        count = 0;
+    }
+
     /// <summary>
-    /// 获取所有激活的组件。
+    /// 获取拥有该组件的实体id集合。
     /// </summary>
     /// <returns></returns>
     public IEnumerable<int> GetEntities()
@@ -93,6 +99,55 @@ public class SparseSet<T> : ISparseSet where T : struct
             if (index != -1)
             {
                 yield return i;
+            }
+        }
+    }
+
+    public IEnumerable<T> GetComponents()
+    {
+        var entities = GetEntities();
+        foreach (var entity in entities)
+        {
+            var component = Get(entity);
+            yield return component;
+        }
+    }
+
+    /// <summary>
+    /// 获取快照信息。
+    /// </summary>
+    /// <returns></returns>
+    public SparseSnapshot GetSnapshot()
+    {
+        var snapshot = new SparseSnapshot
+        {
+            type = typeof(SparseSet<T>).AssemblyQualifiedName,
+        };
+        var entities = GetEntities();
+        var dict = new Dictionary<int, object>();
+        foreach (var entity in entities)
+        {
+            var component = Get(entity);
+            dict.Add(entity, component);
+        }
+        snapshot.components = dict;
+        return snapshot;
+    }
+
+
+    /// <summary>
+    /// 加载快照。
+    /// </summary>
+    /// <param name="entities"></param>
+    /// <param name="components"></param>
+    public void LoadSnapshot(SparseSnapshot snapshot)
+    {
+        Clear();
+        foreach (var (entity, component) in snapshot.components)
+        {
+            if (component is T t)
+            {
+                Add(entity, ref t);
             }
         }
     }

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using GodotMonoGeneral.Utils;
 
 namespace GodotMonoGeneral.Logic.ECS;
@@ -111,5 +113,36 @@ public class ECSWorld
         return sparseSet.GetEntities();
     }
 
+    public ECSSnapshot GetSnapshot()
+    {
+        var snapshot = new ECSSnapshot
+        {
+            date = DateTime.Now,
+            sparseSnapshots = GetSparseSnapshots()
+        };
+        return snapshot;
+    } 
+
+    IEnumerable<SparseSnapshot> GetSparseSnapshots()
+    {
+        foreach (var sparse in sparses)
+        {
+            yield return sparse.GetSnapshot();
+        }
+    }
+
+    /// <summary>
+    /// 加载快照。
+    /// </summary>
+    /// <param name="snapshot"></param>
+    public void LoadSnapshot(ECSSnapshot snapshot)
+    {
+        foreach (var item in snapshot.sparseSnapshots)
+        {
+            var sparse = (ISparseSet) SingletonFactory.GetSingleton(item.type);
+            sparses.Add(sparse);
+            sparse.LoadSnapshot(item);
+        }
+    }
    
 }

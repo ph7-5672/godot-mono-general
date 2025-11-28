@@ -1,4 +1,5 @@
 
+using System.Text.Json;
 using GodotMonoGeneral.Logic.ECS;
 using GodotMonoGeneral.Utils;
 
@@ -11,6 +12,7 @@ public class LogicFacade
 {
     private LogicFacade() { }
 
+    private static ECSWorld World => SingletonFactory.GetSingleton<ECSWorld>();
     private static InventorySystem Inventory => SingletonFactory.GetSingleton<InventorySystem>();
 
     /// <summary>
@@ -70,4 +72,23 @@ public class LogicFacade
         
     }
 
+
+    #region 存读档
+    /// <summary>
+    /// 获取当前快照。
+    /// </summary>
+    /// <returns></returns>
+    public static ECSSnapshot GetGameSnapshot()
+    {
+        return World.GetSnapshot();
+    }
+
+
+    public static void LoadGameSnapshot()
+    {
+        
+    }
+    
+
+    #endregion
 }

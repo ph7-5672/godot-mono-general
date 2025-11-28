@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+
 namespace GodotMonoGeneral.Utils;
 
 /// <summary>
@@ -5,15 +8,29 @@ namespace GodotMonoGeneral.Utils;
 /// </summary>
 public static class SingletonFactory
 {
+
+    private static readonly Dictionary<string, object> instances = [];
+
     public static T GetSingleton<T>() where T : new()
     {
-        return Factory<T>.Instance;
+        var type = typeof(T).AssemblyQualifiedName;
+        if (!instances.TryGetValue(type, out var instance))
+        {
+            instance = new T();
+            instances.Add(type, instance);
+        }
+        return (T)instance;
     }
 
-    class Factory<T> where T : new()
+    public static object GetSingleton(string type)
     {
-        static T instance;
-        public static T Instance => instance ??= new T();
+        if (!instances.TryGetValue(type, out var instance))
+        {
+            var t = Type.GetType(type);
+            instance = Activator.CreateInstance(t);
+            instances.Add(type, instance);
+        }
+        return instance;
     }
 
 }
