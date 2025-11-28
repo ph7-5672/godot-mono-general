@@ -74,21 +74,42 @@ public class LogicFacade
 
 
     #region 存读档
+
+    private static string GetSavePath(int index)
+    {
+        return $"res://Saves/{index}.save";
+    }
+
     /// <summary>
-    /// 获取当前快照。
+    /// 加载指定索引的存档。
     /// </summary>
-    /// <returns></returns>
-    public static ECSSnapshot GetGameSnapshot()
+    /// <param name="index"></param>
+    public static void LoadSave(int index)
     {
-        return World.GetSnapshot();
+        if (index < 0)
+        {
+            return;
+        }
+        var path = GetSavePath(index);
+        var snapshot = IOHelper.ReadJson<ECSSnapshot>(path);
+        World.LoadSnapshot(snapshot);
     }
 
-
-    public static void LoadGameSnapshot()
+    /// <summary>
+    /// 保存游戏到指定存档。
+    /// </summary>
+    /// <param name="index"></param>
+    public static void SaveGame(int index)
     {
-        
+        if (index < 0)
+        {
+            return;
+        }
+        var path = GetSavePath(index);
+        var snapshot = World.GetSnapshot();
+        IOHelper.WriteJson(snapshot, path);
     }
-    
+
 
     #endregion
 }

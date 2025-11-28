@@ -2,7 +2,7 @@ namespace GodotMonoGeneral.Logic.ECS;
 
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
+using GodotMonoGeneral.Utils;
 
 /// <summary>
 /// 内存高效的ECS存储。
@@ -145,8 +145,9 @@ public class SparseSet<T> : ISparseSet where T : struct
         Clear();
         foreach (var (entity, component) in snapshot.components)
         {
-            if (component is T t)
+            if (component is System.Text.Json.JsonElement element)
             {
+                var t = IOHelper.ToObject<T>(element);
                 Add(entity, ref t);
             }
         }

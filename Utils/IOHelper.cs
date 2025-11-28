@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Godot;
 
 namespace GodotMonoGeneral.Utils;
@@ -7,15 +8,18 @@ namespace GodotMonoGeneral.Utils;
 /// </summary>
 public static class IOHelper
 {
+
+    static readonly JsonSerializerOptions jsonSerializerOptions = new(){IncludeFields = true};
+
     /// <summary>
     /// 将文本写入文件。
     /// </summary>
     /// <param name="text">文本内容</param>
-    /// <param name="file">文件相对于根目录的路径</param>
+    /// <param name="file">文件路径</param>
     public static void WriteText(string text, string file)
     {
-        using var fileAccess = FileAccess.Open($"res://{file}", FileAccess.ModeFlags.Write);
-        if (file == null)
+        using var fileAccess = FileAccess.Open(file, FileAccess.ModeFlags.Write);
+        if (fileAccess == null)
         {
             return;
         }
@@ -29,12 +33,11 @@ public static class IOHelper
     /// <returns></returns>
     public static string ReadText(string file)
     {
-        var path = $"res://{file}";
-        if (!FileAccess.FileExists(path))
+        if (!FileAccess.FileExists(file))
         {
             return null;
         }
-        using var fileAccess = FileAccess.Open(path, FileAccess.ModeFlags.Read);
+        using var fileAccess = FileAccess.Open(file, FileAccess.ModeFlags.Read);
         if (fileAccess == null)
         {
             return null;
@@ -66,5 +69,34 @@ public static class IOHelper
         return Json.ParseString(jsonText) as T;
     }
     
+    /// <summary>
+    /// 将对象转为json写入文件。
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="obj"></param>
+    /// <param name="file"></param>
+    public static void WriteJson<T>(T obj, string file)
+    {
+        var json = JsonSerializer.Serialize(obj, jsonSerializerOptions);
+        WriteText(json, file);
+    }
+
+    /// <summary>
+    /// 从文件读取json对象。
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    public static T ReadJson<T>(string file)
+    {
+        var json = ReadText(file);
+        return JsonSerializer.Deserialize<T>(json, jsonSerializerOptions);
+    }
+
+
+    public static T ToObject<T>(JsonElement element)
+    {
+        return element.Deserialize<T>(jsonSerializerOptions);
+    }
 
 }
