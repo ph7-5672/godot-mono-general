@@ -1,5 +1,6 @@
 using Godot;
 using GodotMonoGeneral.Logic;
+using GodotMonoGeneral.Utils;
 
 public partial class Test : CanvasLayer
 {
@@ -12,11 +13,8 @@ public partial class Test : CanvasLayer
         var inventoryId = LogicFacade.CreateInventory(999, "Test");
        // LogicFacade.CreateSlotsToInventory(inventoryId, 4);
         LoadSave();
-        var packedScene = GD.Load<PackedScene>("res://View/InventoryTest.tscn");
-        var test = packedScene.Instantiate();
+        var test = this.OpenScene<CanvasLayer>("res://View/InventoryTest.tscn");
         test.SetMeta("inventoryId", inventoryId);
-        AddChild(test);
-       
     }
 
 

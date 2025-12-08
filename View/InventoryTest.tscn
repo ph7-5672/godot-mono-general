@@ -9,3 +9,48 @@ columns = 4
 
 [node name="Slot1" parent="GridContainer" instance=ExtResource("1_6vlan")]
 layout_mode = 2
+
+[node name="Slot2" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot3" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot4" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot5" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot6" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot7" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot8" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot9" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot10" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot11" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot12" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot13" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot14" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot15" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2
+
+[node name="Slot16" parent="GridContainer" instance=ExtResource("1_6vlan")]
+layout_mode = 2

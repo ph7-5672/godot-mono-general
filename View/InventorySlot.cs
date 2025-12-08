@@ -1,20 +1,19 @@
 using Godot;
 using GodotMonoGeneral.Logic;
-using GodotMonoGeneral.View.Api;
 
 namespace GodotMonoGeneral.View;
 
 /// <summary>
 /// 背包格子。
 /// </summary>
-public partial class InventorySlot : Control, IViewController
+public partial class InventorySlot : Control
 {
     int slotId = -1;
 
     public override void _Ready()
     {
         base._Ready();
-        CallDeferred("Refresh");
+        //CallDeferred("Refresh");
     }
 
     public void Refresh()
@@ -36,8 +35,8 @@ public partial class InventorySlot : Control, IViewController
         }
         Visible = true;
         var data = LogicFacade.GetSlotData(slotId);
-        var next = this.Divide(); // 分裂。
-        next.Owner = Owner; // 设置数据共享。
+        // var next = this.Divide(); // 分裂。
+        // next.Owner = Owner; // 设置数据共享。
     }
 
 }

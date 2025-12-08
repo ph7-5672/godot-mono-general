@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://gg8of1xj2fbv"]
+[gd_scene load_steps=3 format=3 uid="uid://gg8of1xj2fbv"]
 
 [ext_resource type="Script" uid="uid://c8a8e0dglvmqv" path="res://View/Test.cs" id="1_f2eu3"]
+[ext_resource type="PackedScene" uid="uid://di771bqtr1hgc" path="res://View/InventoryTest.tscn" id="2_kwt6j"]
 
 [node name="Test" type="CanvasLayer"]
 script = ExtResource("1_f2eu3")
@@ -23,6 +24,8 @@ text = "保存游戏"
 [node name="LoadButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "加载游戏"
+
+[node name="InventoryTest" parent="." instance=ExtResource("2_kwt6j")]
 
 [connection signal="pressed" from="VBoxContainer/SaveButton" to="." method="SaveGame"]
 [connection signal="pressed" from="VBoxContainer/LoadButton" to="." method="LoadSave"]
