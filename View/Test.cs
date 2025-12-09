@@ -10,10 +10,7 @@ public partial class Test : CanvasLayer
     {
         base._Ready();
         ProcessPriority = int.MaxValue; // 最后处理，用以事件的每帧清除。
-        inventoryTest.SetMeta("inventoryId", 0);
-        LoadSave();
     }
-
 
     public override void _Process(double delta)
     {

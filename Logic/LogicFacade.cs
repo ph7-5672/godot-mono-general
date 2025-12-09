@@ -42,7 +42,7 @@ public class LogicFacade
     /// <param name="entityId">实体id</param>
     /// <param name="name">仓库/背包名称</param>
     /// <return>新仓库/背包的实体id</return>
-    public static int CreateInventory(int entityId, string name)
+    public static int CreateInventory(int entityId = -1, string name = null)
     {
         return Inventory.CreateInventory(entityId, name);
     }

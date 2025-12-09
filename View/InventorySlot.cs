@@ -13,12 +13,26 @@ public partial class InventorySlot : Control
     Label countLabel;
     [Export]
     Label idLabel;
+    [Export]
+    int capacity;
 
+    int inventoryId = -1;
     int slotId = -1;
 
+    
     public override void _Ready()
     {
         base._Ready();
+        // 注册格子数据。
+        var parent = GetParent();
+        if (!parent.HasMeta("inventoryId")) // 以父节点的元数据作为数据共享。
+        {
+            var inventory = LogicFacade.CreateInventory();
+            parent.SetMeta("inventoryId", inventory);
+        }
+        inventoryId = parent.GetMeta("inventoryId").AsInt32();
+        LogicFacade.CreateSlotsToInventory(inventoryId, 1, capacity);
+        CallDeferred("Refresh");
     }
 
     public override void _Process(double delta)
@@ -32,7 +46,7 @@ public partial class InventorySlot : Control
 
     public void Refresh()
     {
-        if (!Owner.HasMeta("inventoryId")) // 以Owner（预制场景的根节点）的元数据作为数据共享。
+        if (inventoryId == -1)
         {
             return;
         }
