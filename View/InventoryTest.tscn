@@ -2,9 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://ce55ban0udtqg" path="res://View/InventorySlot.tscn" id="1_6vlan"]
 
-[node name="InventoryTest" type="CanvasLayer"]
+[node name="InventoryTest" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 
 [node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 0
 columns = 4
 
 [node name="Slot1" parent="GridContainer" instance=ExtResource("1_6vlan")]

@@ -1,5 +1,6 @@
 using Godot;
 using GodotMonoGeneral.Logic;
+using GodotMonoGeneral.Logic.ECS;
 
 namespace GodotMonoGeneral.View;
 
@@ -8,17 +9,29 @@ namespace GodotMonoGeneral.View;
 /// </summary>
 public partial class InventorySlot : Control
 {
+    [Export]
+    Label countLabel;
+    [Export]
+    Label idLabel;
+
     int slotId = -1;
 
     public override void _Ready()
     {
         base._Ready();
-        //CallDeferred("Refresh");
+    }
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        if (LogicFacade.TryGetEvent(out LoadSaveEvent _))
+        {
+            Refresh();
+        }
     }
 
     public void Refresh()
     {
-        Visible = false;
         if (!Owner.HasMeta("inventoryId")) // 以Owner（预制场景的根节点）的元数据作为数据共享。
         {
             return;
@@ -33,10 +46,12 @@ public partial class InventorySlot : Control
         {
             return;
         }
-        Visible = true;
         var data = LogicFacade.GetSlotData(slotId);
-        // var next = this.Divide(); // 分裂。
-        // next.Owner = Owner; // 设置数据共享。
+        if (data.count > 0 && data.itemId != -1)
+        {
+            countLabel.Text = data.count.ToString();
+            idLabel.Text = data.itemId.ToString();
+        }
     }
 
 }

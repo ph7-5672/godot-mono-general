@@ -1,20 +1,24 @@
 using Godot;
 using GodotMonoGeneral.Logic;
-using GodotMonoGeneral.Utils;
 
 public partial class Test : CanvasLayer
 {
-
-    
+    [Export]
+    Control inventoryTest;
 
     public override void _Ready()
     {
         base._Ready();
-        var inventoryId = LogicFacade.CreateInventory(999, "Test");
-       // LogicFacade.CreateSlotsToInventory(inventoryId, 4);
+        ProcessPriority = int.MaxValue; // 最后处理，用以事件的每帧清除。
+        inventoryTest.SetMeta("inventoryId", 0);
         LoadSave();
-        var test = this.OpenScene<CanvasLayer>("res://View/InventoryTest.tscn");
-        test.SetMeta("inventoryId", inventoryId);
+    }
+
+
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+        LogicFacade.ReleaseEvents();
     }
 
 

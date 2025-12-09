@@ -102,6 +102,19 @@ public class ECSWorld
     }
 
     /// <summary>
+    /// 实体删除所有组件。
+    /// </summary>
+    /// <param name="entityId"></param>
+    public void DeleteComponents(int entityId)
+    {
+        foreach (var sparse in sparses)
+        {
+            sparse.Delete(entityId);
+        }
+    }
+
+
+    /// <summary>
     /// 获取包含指定组件的所有实体id。
     /// </summary>
     /// <typeparam name="T"></typeparam>
