@@ -15,25 +15,25 @@ public class LogicFacade
     private static InventorySystem Inventory => SingletonFactory.GetSingleton<InventorySystem>();
     private static EventSystem Event => SingletonFactory.GetSingleton<EventSystem>();
 
-    /// <summary>
-    /// 根据索引获取指定仓库/背包下的格子id。
-    /// </summary>
-    /// <param name="inventoryId"></param>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    public static int GetSlotId(int inventoryId, int index)
-    {
-        return Inventory.GetSlotId(inventoryId, index);
-    }
+    // /// <summary>
+    // /// 根据索引获取指定仓库/背包下的格子id。
+    // /// </summary>
+    // /// <param name="inventoryId"></param>
+    // /// <param name="index"></param>
+    // /// <returns></returns>
+    // public static int GetSlotId(int inventoryId, int index)
+    // {
+    //     return Inventory.GetSlotId(inventoryId, index);
+    // }
 
     /// <summary>
     /// 获取指定格子数据。
     /// </summary>
     /// <param name="slotId"></param>
     /// <returns></returns>
-    public static SlotData GetSlotData(int slotId)
+    public static ref SlotData GetSlotData(int slotId)
     {
-        return Inventory.GetSlotData(slotId);
+        return ref Inventory.GetSlotData(slotId);
     }
 
     /// <summary>

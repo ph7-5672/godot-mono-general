@@ -37,12 +37,13 @@ public static class SingletonFactory
     /// <param name="type"></param>
     /// <param name="id"></param>
     /// <returns></returns>
-    public static object GetSingleton(string type, string id = "")
+    public static object GetSingleton(Type type, string id = "")
     {
-        var key = $"{type}{id}";
+        var typeName = type.AssemblyQualifiedName;
+        var key = $"{typeName}{id}";
         if (!instances.TryGetValue(key, out var instance))
         {
-            var t = Type.GetType(type);
+            var t = Type.GetType(typeName);
             instance = Activator.CreateInstance(t);
             instances.Add(key, instance);
         }

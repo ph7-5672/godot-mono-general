@@ -114,16 +114,29 @@ public class ECSWorld
     }
 
 
-    /// <summary>
-    /// 获取包含指定组件的所有实体id。
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public IEnumerable<int> GetEntities<T>() where T : struct
-    {
-        var sparseSet = RegisterComponent<T>();
-        return sparseSet.GetEntities();
-    }
+    // /// <summary>
+    // /// 获取包含指定组件的所有实体id。
+    // /// </summary>
+    // /// <typeparam name="T"></typeparam>
+    // /// <returns></returns>
+    // public IEnumerable<int> GetEntities<T>() where T : struct
+    // {
+    //     var sparseSet = RegisterComponent<T>();
+    //     return sparseSet.GetEntities();
+    // }
+
+    // /// <summary>
+    // /// 查询符合条件的组件。
+    // /// </summary>
+    // /// <typeparam name="T"></typeparam>
+    // /// <param name="filter"></param>
+    // /// <returns></returns>
+    // public IEnumerable<T> QueryComponents<T>(Func<T, bool> filter) where T : struct
+    // {
+    //     var sparseSet = RegisterComponent<T>();
+    //     return sparseSet.Query(filter);
+    // }
+
 
     public ECSSnapshot GetSnapshot()
     {
@@ -151,7 +164,8 @@ public class ECSWorld
     {
         foreach (var item in snapshot.sparseSnapshots)
         {
-            var sparse = (ISparseSet) SingletonFactory.GetSingleton(item.type);
+            var type = Type.GetType(item.type);
+            var sparse = (ISparseSet) SingletonFactory.GetSingleton(type);
             sparses.Add(sparse);
             sparse.LoadSnapshot(item);
         }

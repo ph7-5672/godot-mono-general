@@ -31,7 +31,9 @@ public partial class InventorySlot : Control
             parent.SetMeta("inventoryId", inventory);
         }
         inventoryId = parent.GetMeta("inventoryId").AsInt32();
-        LogicFacade.CreateSlotsToInventory(inventoryId, 1, capacity);
+        slotId = LogicFacade.CreateSlotsToInventory(inventoryId, 1, capacity)[0]; // 创建单个格子实体。
+        ref SlotData data = ref LogicFacade.GetSlotData(slotId); // 编辑格子数据。
+        data.index = GetIndex();  // 同步索引。
         CallDeferred("Refresh");
     }
 
@@ -50,12 +52,12 @@ public partial class InventorySlot : Control
         {
             return;
         }
-        if (slotId == -1) // 尝试获取格子id。
-        {
-            var inventoryId = Owner.GetMeta("inventoryId").AsInt32(); // 获取背包id用以查询数据。
-            var index = GetIndex();
-            slotId = LogicFacade.GetSlotId(inventoryId, index);
-        }
+        // if (slotId == -1) // 尝试获取格子id。
+        // {
+        //     var inventoryId = Owner.GetMeta("inventoryId").AsInt32(); // 获取背包id用以查询数据。
+        //     var index = GetIndex();
+        //     slotId = LogicFacade.GetSlotId(inventoryId, index);
+        // }
         if (slotId == -1)
         {
             return;
