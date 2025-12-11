@@ -2,6 +2,7 @@ namespace GodotMonoGeneral.Logic.ECS;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GodotMonoGeneral.Utils;
 
 /// <summary>
@@ -10,32 +11,35 @@ using GodotMonoGeneral.Utils;
 /// <typeparam name="T"></typeparam>
 public class SparseSet<T> : ISparseSet where T : struct
 {
-    public const int ENTITY_MAX_COUNT = 8192;
-
+    const int initialCapacity = 64;
     /// <summary>
     /// 紧凑存储实际数据。
     /// </summary>
-    private readonly T[] components;
-
+    private T[] components;
     /// <summary>
     /// 索引映射。
     /// </summary>
-    private readonly int[] indics;
+    private int[] indics;
+    /// <summary>
+    /// 实体id数组。
+    /// </summary>
+    private int[] entities;
 
     /// <summary>
     /// 激活的组件数量。
     /// </summary>
-    private int count;
+    public int Count { get; private set; }
 
-    public int Count => count;
+    public int Capacity { get; private set; }
 
     public SparseSet()
     {
-        components = new T[ENTITY_MAX_COUNT];
-        indics = new int[ENTITY_MAX_COUNT];
+        components = new T[initialCapacity];
+        entities = new int[initialCapacity];
+        indics = new int[initialCapacity];
+        Capacity = initialCapacity;
         Clear();
     }
-
 
     /// <summary>
     /// 添加组件。
@@ -44,10 +48,27 @@ public class SparseSet<T> : ISparseSet where T : struct
     /// <param name="component"></param>
     public void Add(int entityId, ref T component)
     {
-        var index = count;
+        if (Has(entityId))
+        {
+            throw new InvalidOperationException($"Entity {entityId} already has component {typeof(T).Name}");
+        }
+        if (entityId >= indics.Length)
+        {
+            var capacity = Math.Max(entityId + 1, indics.Length * 2);
+            Array.Resize(ref indics, capacity);
+        }
+        if (Count >= Capacity)
+        {
+            // 自动扩容。
+            Capacity *= 2;
+            Array.Resize(ref entities, Capacity);
+            Array.Resize(ref components, Capacity);
+        }
+        var index = Count;
         indics[entityId] = index;
-        ++count;
+        entities[index] = entityId;
         components[index] = component;
+        ++Count;
     }
 
     /// <summary>
@@ -57,7 +78,12 @@ public class SparseSet<T> : ISparseSet where T : struct
     /// <returns></returns>
     public bool Has(int entityId)
     {
-        return indics[entityId] != -1;
+        if (entityId >= indics.Length)
+        {
+            return false;
+        }
+        var index = indics[entityId];
+        return index != -1 && index < Count;
     }
 
     /// <summary>
@@ -67,6 +93,11 @@ public class SparseSet<T> : ISparseSet where T : struct
     /// <returns></returns>
     public ref T Get(int entityId)
     {
+        if (!Has(entityId))
+        {
+            throw new KeyNotFoundException($"Entity {entityId} does not have component {typeof(T).Name}");
+        }
+
         var index = indics[entityId];
         return ref components[index];
     }
@@ -77,41 +108,89 @@ public class SparseSet<T> : ISparseSet where T : struct
     /// <param name="entityId"></param>
     public void Delete(int entityId)
     {
+        var index = indics[entityId];
+        if (index == -1)
+        {
+            return;
+        }
+        var lastIndex = Count - 1;
+        // 将最后一个元素移到被删除的位置。
+        entities[index] = entities[lastIndex];
+        components[index] = components[lastIndex];
+        entities[lastIndex] = -1;
+        // 清理。
         indics[entityId] = -1;
+        --Count;
     }
 
     public void Clear()
     {
         Array.Fill(indics, -1);
-        Array.Fill(components, new T());
-        count = 0;
+        Array.Fill(entities, -1);
+        Count = 0;
     }
 
     /// <summary>
-    /// 获取拥有该组件的实体id集合。
+    /// 查询所有实体和组件，可用于迭代。
     /// </summary>
     /// <returns></returns>
-    public IEnumerable<int> GetEntities()
+    public (int, T)[] GetAll()
     {
-        for (int i = 0; i < indics.Length; i++)
+        var result = new (int, T)[Count];
+        for (int i = 0; i < Count; i++)
         {
-            var index = indics[i];
-            if (index != -1)
-            {
-                yield return i;
-            }
+            result[i] = (entities[i], components[i]);
         }
+        return result;
     }
 
-    public IEnumerable<T> GetComponents()
-    {
-        var entities = GetEntities();
-        foreach (var entity in entities)
-        {
-            var component = Get(entity);
-            yield return component;
-        }
-    }
+    // /// <summary>
+    // /// 获取拥有该组件的实体id集合。
+    // /// </summary>
+    // /// <returns></returns>
+    // public IEnumerable<int> GetEntities()
+    // {
+    //     for (int i = 0; i < indics.Length; i++)
+    //     {
+    //         var index = indics[i];
+    //         if (index != -1)
+    //         {
+    //             yield return i;
+    //         }
+    //     }
+    // }
+
+    // /// <summary>
+    // /// 查询符合条件的组件。
+    // /// </summary>
+    // /// <param name="filter"></param>
+    // /// <returns></returns>
+    // public IEnumerable<T> Query(Func<T, bool> filter)
+    // {
+    //     for (int i = 0; i < indics.Length; i++)
+    //     {
+    //         var index = indics[i];
+    //         if (index == -1)
+    //         {
+    //             continue;
+    //         }
+    //         var component = components[index];
+    //         if (filter(component))
+    //         {
+    //             yield return component;
+    //         }
+    //     }
+    // }
+
+    // public IEnumerable<T> GetComponents()
+    // {
+    //     var entities = GetEntities();
+    //     foreach (var entity in entities)
+    //     {
+    //         var component = Get(entity);
+    //         yield return component;
+    //     }
+    // }
 
     /// <summary>
     /// 获取快照信息。
@@ -123,12 +202,12 @@ public class SparseSet<T> : ISparseSet where T : struct
         {
             type = typeof(SparseSet<T>).AssemblyQualifiedName,
         };
-        var entities = GetEntities();
+        //var entities = GetEntities();
         var dict = new Dictionary<int, object>();
-        foreach (var entity in entities)
+        var all = GetAll();
+        foreach (var entry in all)
         {
-            var component = Get(entity);
-            dict.Add(entity, component);
+            dict.Add(entry.Item1, entry.Item2);
         }
         snapshot.components = dict;
         return snapshot;
