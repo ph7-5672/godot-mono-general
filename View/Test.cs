@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Godot;
 using GodotMonoGeneral.Logic;
 
@@ -15,7 +16,6 @@ public partial class Test : CanvasLayer
     public override void _Process(double delta)
     {
         base._Process(delta);
-        LogicFacade.ReleaseEvents();
     }
 
 
@@ -26,7 +26,10 @@ public partial class Test : CanvasLayer
 
     public void LoadSave()
     {
+        var stopwatch = Stopwatch.StartNew();
         LogicFacade.LoadSave(0);
+        stopwatch.Stop();
+        GD.Print(stopwatch.ElapsedMilliseconds);
     }
 
 }

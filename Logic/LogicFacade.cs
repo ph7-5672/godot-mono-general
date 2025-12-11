@@ -13,18 +13,6 @@ public class LogicFacade
 
     private static ECSWorld World => SingletonFactory.GetSingleton<ECSWorld>();
     private static InventorySystem Inventory => SingletonFactory.GetSingleton<InventorySystem>();
-    private static EventSystem Event => SingletonFactory.GetSingleton<EventSystem>();
-
-    // /// <summary>
-    // /// 根据索引获取指定仓库/背包下的格子id。
-    // /// </summary>
-    // /// <param name="inventoryId"></param>
-    // /// <param name="index"></param>
-    // /// <returns></returns>
-    // public static int GetSlotId(int inventoryId, int index)
-    // {
-    //     return Inventory.GetSlotId(inventoryId, index);
-    // }
 
     /// <summary>
     /// 获取指定格子数据。
@@ -93,7 +81,7 @@ public class LogicFacade
         var path = GetSavePath(index);
         var snapshot = IOHelper.ReadJson<ECSSnapshot>(path);
         World.LoadSnapshot(snapshot);
-        Event.RaiseEvent(new LoadSaveEvent(index));
+        EventBus.Raise("load_save", index);
     }
 
     /// <summary>
@@ -109,22 +97,8 @@ public class LogicFacade
         var path = GetSavePath(index);
         var snapshot = World.GetSnapshot();
         IOHelper.WriteJson(snapshot, path);
-        Event.RaiseEvent(new SaveGameEvent(index));
+        EventBus.Raise("save_game", index);
     }
-
-
     #endregion
 
-    #region 事件系统
-    public static bool TryGetEvent<T>(out T eventArgs) where T : struct
-    {
-        return Event.TryGetEvent(out eventArgs);
-    }
-
-    public static void ReleaseEvents()
-    {
-        Event.ReleaseEvents();
-    }
-
-    #endregion
 }

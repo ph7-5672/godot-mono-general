@@ -144,54 +144,6 @@ public class SparseSet<T> : ISparseSet where T : struct
         return result;
     }
 
-    // /// <summary>
-    // /// 获取拥有该组件的实体id集合。
-    // /// </summary>
-    // /// <returns></returns>
-    // public IEnumerable<int> GetEntities()
-    // {
-    //     for (int i = 0; i < indics.Length; i++)
-    //     {
-    //         var index = indics[i];
-    //         if (index != -1)
-    //         {
-    //             yield return i;
-    //         }
-    //     }
-    // }
-
-    // /// <summary>
-    // /// 查询符合条件的组件。
-    // /// </summary>
-    // /// <param name="filter"></param>
-    // /// <returns></returns>
-    // public IEnumerable<T> Query(Func<T, bool> filter)
-    // {
-    //     for (int i = 0; i < indics.Length; i++)
-    //     {
-    //         var index = indics[i];
-    //         if (index == -1)
-    //         {
-    //             continue;
-    //         }
-    //         var component = components[index];
-    //         if (filter(component))
-    //         {
-    //             yield return component;
-    //         }
-    //     }
-    // }
-
-    // public IEnumerable<T> GetComponents()
-    // {
-    //     var entities = GetEntities();
-    //     foreach (var entity in entities)
-    //     {
-    //         var component = Get(entity);
-    //         yield return component;
-    //     }
-    // }
-
     /// <summary>
     /// 获取快照信息。
     /// </summary>

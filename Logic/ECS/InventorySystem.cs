@@ -6,29 +6,6 @@ public class InventorySystem
 {
     private ECSWorld World => SingletonFactory.GetSingleton<ECSWorld>();
 
-    // public int GetSlotId(int inventoryId, int index)
-    // {
-    //     if (!World.HasComponent<InventoryData>(inventoryId)) // 验证仓库/背包id。
-    //     {
-    //         return -1;
-    //     }
-    //     // var entities = World.GetEntities<SlotData>(); // 获取所有格子实体。
-    //     // foreach (var slotId in entities)
-    //     // {
-    //     //     var s = World.GetComponent<SlotData>(slotId);
-    //     //     if (s.inventoryId == inventoryId && s.index == index)
-    //     //     {
-    //     //         return slotId;
-    //     //     }
-    //     // }
-    //     var slots = World.QueryComponents<SlotData>(s => s.inventoryId == inventoryId && s.index == index);
-    //     foreach (var slot in slots)
-    //     {
-            
-    //     }
-    //     return -1;
-    // }
-
     public ref SlotData GetSlotData(int slotId)
     {
         return ref World.GetComponent<SlotData>(slotId);

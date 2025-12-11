@@ -18,10 +18,10 @@ public class EventBus
         var handlerMap = SingletonFactory.GetSingleton<EventBus>().handlerMap;
         if (!handlerMap.TryGetValue(eventName, out var handler))
         {
-            handler = new EventHandler(@delegate, oneshot);
+            handler = new EventHandler([@delegate], [oneshot]);
             handlerMap.Add(eventName, handler);
         }
-        handler.delegates = Delegate.Combine(handler.delegates, @delegate);
+        handler.Add(@delegate, oneshot);
     }
     /// <summary>
     /// 取消订阅事件。
@@ -33,7 +33,7 @@ public class EventBus
         var handlerMap = SingletonFactory.GetSingleton<EventBus>().handlerMap;
         if (handlerMap.TryGetValue(eventName, out var handler))
         {
-            handler.delegates = Delegate.Remove(handler.delegates, @delegate);
+            handler.Remove(@delegate);
         }
     }
     /// <summary>
@@ -46,13 +46,38 @@ public class EventBus
         var handlerMap = SingletonFactory.GetSingleton<EventBus>().handlerMap;
         if (handlerMap.TryGetValue(eventName, out var handler))
         {
-            handler.delegates.DynamicInvoke(args);
+            for (int i = 0; i < handler.delegates.Count; i++)
+            {
+                var invocation = handler.delegates[i];
+                var oneshot = handler.oneshots[i];
+                invocation.DynamicInvoke(args);
+                if (oneshot) // 只触发一次。
+                {
+                    handler.Remove(invocation);// 触发后移除。
+                }
+            }
         }
     }
 }
 
-public class EventHandler(Delegate delegates, bool oneshot)
+public class EventHandler(List<Delegate> delegates, List<bool> oneshots)
 {
-    public Delegate delegates = delegates;
-    public bool oneshot = oneshot;
+    public List<Delegate> delegates = delegates;
+    public List<bool> oneshots = oneshots;
+    public int Count => oneshots.Count;
+    public void Add(Delegate @delegate, bool oneshot)
+    {
+        delegates.Add(@delegate);
+        oneshots.Add(oneshot);
+    }
+    public void Remove(Delegate @delegate)
+    {
+        var index = delegates.IndexOf(@delegate);
+        if (index == -1)
+        {
+            return;
+        }
+        delegates.RemoveAt(index);
+        oneshots.RemoveAt(index);
+    }
 }

@@ -113,6 +113,16 @@ public class ECSWorld
         }
     }
 
+    /// <summary>
+    /// 查询单个组件集合。
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public (int, T)[] Query<T>() where T : struct
+    {
+        var sparseSet = RegisterComponent<T>();
+        return sparseSet.GetAll();
+    }
 
     // /// <summary>
     // /// 获取包含指定组件的所有实体id。

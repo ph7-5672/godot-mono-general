@@ -1,6 +1,8 @@
+using System;
 using Godot;
 using GodotMonoGeneral.Logic;
 using GodotMonoGeneral.Logic.ECS;
+using GodotMonoGeneral.Utils;
 
 namespace GodotMonoGeneral.View;
 
@@ -19,7 +21,13 @@ public partial class InventorySlot : Control
     int inventoryId = -1;
     int slotId = -1;
 
-    
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+        Action<int> handler = (index) => {Refresh();};
+        EventBus.Subscribe("load_save", handler);
+    }
+
     public override void _Ready()
     {
         base._Ready();
@@ -37,33 +45,15 @@ public partial class InventorySlot : Control
         CallDeferred("Refresh");
     }
 
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
-        if (LogicFacade.TryGetEvent(out LoadSaveEvent _))
-        {
-            Refresh();
-        }
-    }
-
     public void Refresh()
     {
-        if (inventoryId == -1)
+        if (inventoryId == -1 || slotId == -1)
         {
             return;
         }
-        // if (slotId == -1) // 尝试获取格子id。
-        // {
-        //     var inventoryId = Owner.GetMeta("inventoryId").AsInt32(); // 获取背包id用以查询数据。
-        //     var index = GetIndex();
-        //     slotId = LogicFacade.GetSlotId(inventoryId, index);
-        // }
-        if (slotId == -1)
-        {
-            return;
-        }
-        var data = LogicFacade.GetSlotData(slotId);
-        if (data.count > 0 && data.itemId != -1)
+     
+        var data = LogicFacade.GetSlotData(slotId); // 查询数据。
+        if (data.count > 0 && data.itemId != -1) // 物品数量为0或者没有物品时不显示。
         {
             countLabel.Text = data.count.ToString();
             idLabel.Text = data.itemId.ToString();
