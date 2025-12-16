@@ -24,12 +24,13 @@ public class SparseSet<T> : ISparseSet where T : struct
     /// 实体id数组。
     /// </summary>
     private int[] entities;
-
     /// <summary>
     /// 激活的组件数量。
     /// </summary>
     public int Count { get; private set; }
-
+    /// <summary>
+    /// 组件容量。
+    /// </summary>
     public int Capacity { get; private set; }
 
     public SparseSet()
@@ -123,54 +124,64 @@ public class SparseSet<T> : ISparseSet where T : struct
         --Count;
     }
 
+    /// <summary>
+    /// 清空。
+    /// </summary>
     public void Clear()
     {
         Array.Fill(indics, -1);
         Array.Fill(entities, -1);
         Count = 0;
     }
-
     /// <summary>
-    /// 查询所有实体和组件，可用于迭代。
+    /// 遍历委托。
     /// </summary>
-    /// <returns></returns>
-    public (int, T)[] GetAll()
+    /// <param name="entity">实体id</param>
+    /// <param name="component">组件数据</param>
+    public delegate void RefAction(int entity, ref T component);
+    /// <summary>
+    /// 遍历所有实体和组件。
+    /// </summary>
+    /// <param name="action"></param>
+    public void ForEach(ref RefAction action)
     {
-        var result = new (int, T)[Count];
         for (int i = 0; i < Count; i++)
         {
-            result[i] = (entities[i], components[i]);
+            var entity = entities[i];
+            ref var component = ref components[i];
+            action(entity, ref component);
         }
-        return result;
     }
 
     /// <summary>
     /// 获取快照信息。
     /// </summary>
-    /// <returns></returns>
+    /// <returns>快照数据</returns>
     public SparseSnapshot GetSnapshot()
     {
         var snapshot = new SparseSnapshot
         {
             type = typeof(SparseSet<T>).AssemblyQualifiedName,
         };
-        //var entities = GetEntities();
         var dict = new Dictionary<int, object>();
-        var all = GetAll();
-        foreach (var entry in all)
+        for (int i = 0; i < Count; i++)
         {
-            dict.Add(entry.Item1, entry.Item2);
+            var entity = entities[i];
+            var component = components[i];
+            if (entity == -1)
+            {
+                break;
+            }
+            dict.Add(entity, component);
         }
         snapshot.components = dict;
         return snapshot;
     }
 
-
     /// <summary>
     /// 加载快照。
     /// </summary>
-    /// <param name="entities"></param>
-    /// <param name="components"></param>
+    /// <param name="snapshot">快照数据</param>
     public void LoadSnapshot(SparseSnapshot snapshot)
     {
         Clear();
@@ -183,21 +194,5 @@ public class SparseSet<T> : ISparseSet where T : struct
             }
         }
     }
-
-    /// <summary>
-    /// 根据索引获取组件。
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    public T this[int index]
-    {
-        get
-        {
-            return components[index];
-        }
-
-    }
-
-
 
 }

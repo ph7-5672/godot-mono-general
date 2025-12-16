@@ -94,7 +94,7 @@ public class ECSWorld
     /// 实体删除组件。
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <param name="entityId"></param>
+    /// <param name="entityId">实体id</param>
     public void DeleteComponent<T>(int entityId) where T : struct
     {
         var sparseSet = RegisterComponent<T>();
@@ -104,7 +104,7 @@ public class ECSWorld
     /// <summary>
     /// 实体删除所有组件。
     /// </summary>
-    /// <param name="entityId"></param>
+    /// <param name="entityId">实体id</param>
     public void DeleteComponents(int entityId)
     {
         foreach (var sparse in sparses)
@@ -114,40 +114,9 @@ public class ECSWorld
     }
 
     /// <summary>
-    /// 查询单个组件集合。
+    /// 获取快照。
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    public (int, T)[] Query<T>() where T : struct
-    {
-        var sparseSet = RegisterComponent<T>();
-        return sparseSet.GetAll();
-    }
-
-    // /// <summary>
-    // /// 获取包含指定组件的所有实体id。
-    // /// </summary>
-    // /// <typeparam name="T"></typeparam>
-    // /// <returns></returns>
-    // public IEnumerable<int> GetEntities<T>() where T : struct
-    // {
-    //     var sparseSet = RegisterComponent<T>();
-    //     return sparseSet.GetEntities();
-    // }
-
-    // /// <summary>
-    // /// 查询符合条件的组件。
-    // /// </summary>
-    // /// <typeparam name="T"></typeparam>
-    // /// <param name="filter"></param>
-    // /// <returns></returns>
-    // public IEnumerable<T> QueryComponents<T>(Func<T, bool> filter) where T : struct
-    // {
-    //     var sparseSet = RegisterComponent<T>();
-    //     return sparseSet.Query(filter);
-    // }
-
-
+    /// <returns>快照数据</returns>
     public ECSSnapshot GetSnapshot()
     {
         var snapshot = new ECSSnapshot
@@ -157,7 +126,10 @@ public class ECSWorld
         };
         return snapshot;
     } 
-
+    /// <summary>
+    /// 获取所有稀疏集合的快照。
+    /// </summary>
+    /// <returns>快照集合</returns>
     IEnumerable<SparseSnapshot> GetSparseSnapshots()
     {
         foreach (var sparse in sparses)
@@ -165,11 +137,10 @@ public class ECSWorld
             yield return sparse.GetSnapshot();
         }
     }
-
     /// <summary>
     /// 加载快照。
     /// </summary>
-    /// <param name="snapshot"></param>
+    /// <param name="snapshot">快照数据</param>
     public void LoadSnapshot(ECSSnapshot snapshot)
     {
         foreach (var item in snapshot.sparseSnapshots)

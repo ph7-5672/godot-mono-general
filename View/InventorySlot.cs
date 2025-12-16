@@ -39,8 +39,8 @@ public partial class InventorySlot : Control
             parent.SetMeta("inventoryId", inventory);
         }
         inventoryId = parent.GetMeta("inventoryId").AsInt32();
-        slotId = LogicFacade.CreateSlotsToInventory(inventoryId, 1, capacity)[0]; // 创建单个格子实体。
-        ref SlotData data = ref LogicFacade.GetSlotData(slotId); // 编辑格子数据。
+        slotId = LogicFacade.CreateSlot(inventoryId, capacity); // 创建单个格子实体。
+        ref var data = ref LogicFacade.World.GetComponent<SlotData>(slotId); // 编辑格子数据。
         data.index = GetIndex();  // 同步索引。
         CallDeferred("Refresh");
     }
@@ -51,8 +51,7 @@ public partial class InventorySlot : Control
         {
             return;
         }
-     
-        var data = LogicFacade.GetSlotData(slotId); // 查询数据。
+        var data = LogicFacade.World.GetComponent<SlotData>(slotId); // 查询数据。
         if (data.count > 0 && data.itemId != -1) // 物品数量为0或者没有物品时不显示。
         {
             countLabel.Text = data.count.ToString();
