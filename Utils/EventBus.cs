@@ -46,6 +46,7 @@ public class EventBus
         var handlerMap = SingletonFactory.GetSingleton<EventBus>().handlerMap;
         if (handlerMap.TryGetValue(eventName, out var handler))
         {
+            var toRemove = new List<Delegate>();
             for (int i = 0; i < handler.delegates.Count; i++)
             {
                 var invocation = handler.delegates[i];
@@ -53,8 +54,12 @@ public class EventBus
                 invocation.DynamicInvoke(args);
                 if (oneshot) // 只触发一次。
                 {
-                    handler.Remove(invocation);// 触发后移除。
+                    toRemove.Add(invocation);// 触发后移除。
                 }
+            }
+            foreach (var invocation in toRemove) // 统一移除。
+            {
+                handler.Remove(invocation);
             }
         }
     }
