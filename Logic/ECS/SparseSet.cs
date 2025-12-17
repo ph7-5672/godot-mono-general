@@ -55,15 +55,25 @@ public class SparseSet<T> : ISparseSet where T : struct
         }
         if (entityId >= indics.Length)
         {
-            var capacity = Math.Max(entityId + 1, indics.Length * 2);
+            var old = indics.Length;
+            var capacity = Math.Max(entityId + 1, old * 2);
             Array.Resize(ref indics, capacity);
+            for (int i = old; i < capacity; i++) // 新扩容的部分设置默认值。
+            {
+                indics[i] = -1;
+            }
         }
         if (Count >= Capacity)
         {
+            var old = Capacity;
             // 自动扩容。
             Capacity *= 2;
             Array.Resize(ref entities, Capacity);
             Array.Resize(ref components, Capacity);
+            for (int i = old; i < Capacity; i++) // 新扩容的部分设置默认值。
+            {
+                entities[i] = -1;
+            }
         }
         var index = Count;
         indics[entityId] = index;
