@@ -1,4 +1,4 @@
-namespace GodotMonoGeneral.Logic.ECS;
+namespace GodotMonoGeneral.Logic;
 
 /// <summary>
 /// 仓库数据。
@@ -13,10 +13,6 @@ public struct InventoryData
     /// 仓库名称。
     /// </summary>
     public string name;
-    /// <summary>
-    /// 格子数量。
-    /// </summary>
-    public int slotCount;
 }
 
 /// <summary>
@@ -45,4 +41,19 @@ public struct SlotData
     /// </summary>
     public int capacity;
 
+}
+
+/// <summary>
+/// 钱包组件。
+/// </summary>
+public struct Wallet
+{   
+    /// <summary>
+    /// 所属的实体ID。
+    /// </summary>
+    public int ownerId;
+    /// <summary>
+    /// 余额。
+    /// </summary>
+    public int amount;
 }

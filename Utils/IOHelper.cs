@@ -93,7 +93,12 @@ public static class IOHelper
         return JsonSerializer.Deserialize<T>(json, jsonSerializerOptions);
     }
 
-
+    /// <summary>
+    /// Json转对象。
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="element"></param>
+    /// <returns></returns>
     public static T ToObject<T>(JsonElement element)
     {
         return element.Deserialize<T>(jsonSerializerOptions);

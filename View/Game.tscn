@@ -1,0 +1,437 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1hbfntpoufsh"]
+
+[ext_resource type="Script" uid="uid://b25kgk3r0lgl4" path="res://View/Player.cs" id="1_d2n31"]
+[ext_resource type="PackedScene" uid="uid://ce55ban0udtqg" path="res://View/InventorySlot.tscn" id="1_t6bgu"]
+[ext_resource type="Script" uid="uid://cbm7j1l1n6mij" path="res://View/WalletAmountLabel.cs" id="5_iji2s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tiw2j"]
+
+[node name="Game" type="Node2D"]
+
+[node name="Player" type="Node" parent="."]
+script = ExtResource("1_d2n31")
+
+[node name="ShopCanvas" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Shelves" type="HFlowContainer" parent="ShopCanvas"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -151.0
+offset_right = 270.0
+offset_bottom = 151.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="ShopCanvas/Shelves"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "货架"
+
+[node name="GridContainer" type="GridContainer" parent="ShopCanvas/Shelves"]
+layout_mode = 2
+columns = 8
+
+[node name="Slot" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot2" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot3" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot4" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot5" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot6" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot7" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot8" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot9" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot10" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot11" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot12" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot13" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot14" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot15" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot16" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot17" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot18" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot19" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot20" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot21" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot22" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot23" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot24" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot25" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot26" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot27" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot28" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot29" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot30" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot31" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot32" parent="ShopCanvas/Shelves/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="MarketCanvas" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="Market" type="HFlowContainer" parent="MarketCanvas"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -151.0
+offset_right = 270.0
+offset_bottom = 151.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="MarketCanvas/Market"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "集市"
+
+[node name="GridContainer" type="GridContainer" parent="MarketCanvas/Market"]
+layout_mode = 2
+columns = 8
+
+[node name="Slot" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot2" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot3" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot4" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot5" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot6" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot7" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot8" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot9" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot10" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot11" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot12" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot13" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot14" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot15" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot16" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot17" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot18" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot19" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot20" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot21" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot22" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot23" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot24" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot25" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot26" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot27" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot28" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot29" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot30" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot31" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot32" parent="MarketCanvas/Market/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="PlayerCanvas" type="CanvasLayer" parent="."]
+
+[node name="Inventory" type="HFlowContainer" parent="PlayerCanvas"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -338.0
+offset_top = -134.0
+offset_right = 338.0
+offset_bottom = 134.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+
+[node name="Label" type="Label" parent="PlayerCanvas/Inventory"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "玩家仓库"
+
+[node name="MarginContainer" type="MarginContainer" parent="PlayerCanvas/Inventory"]
+custom_minimum_size = Vector2(516, 0)
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="PlayerCanvas/Inventory"]
+custom_minimum_size = Vector2(64, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/focus = SubResource("StyleBoxEmpty_tiw2j")
+text = "关闭"
+
+[node name="GridContainer" type="GridContainer" parent="PlayerCanvas/Inventory"]
+layout_mode = 2
+columns = 10
+metadata/inventoryName = "玩家仓库"
+metadata/owner = NodePath("../../../Player")
+
+[node name="Slot" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot2" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot3" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot4" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot5" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot6" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot7" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot8" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot9" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot10" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot11" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot12" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot13" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot14" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot15" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot16" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot17" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot18" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot19" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot20" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot21" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot22" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot23" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot24" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot25" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot26" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot27" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot28" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot29" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot30" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot31" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot32" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot33" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot34" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot35" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot36" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot37" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot38" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot39" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="Slot40" parent="PlayerCanvas/Inventory/GridContainer" instance=ExtResource("1_t6bgu")]
+layout_mode = 2
+
+[node name="FunctionCanvas" type="CanvasLayer" parent="."]
+
+[node name="WalletContainer" type="HBoxContainer" parent="FunctionCanvas"]
+offset_right = 121.0
+offset_bottom = 40.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 0
+
+[node name="IconLabel" type="Label" parent="FunctionCanvas/WalletContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "💎"
+
+[node name="AmountLabel" type="Label" parent="FunctionCanvas/WalletContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "1000"
+script = ExtResource("5_iji2s")
+metadata/owner = NodePath("../../../Player")
+
+[connection signal="pressed" from="PlayerCanvas/Inventory/CloseButton" to="PlayerCanvas" method="set_visible" binds= [false]]

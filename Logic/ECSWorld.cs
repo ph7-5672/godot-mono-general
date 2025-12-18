@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using GodotMonoGeneral.Utils;
 
-namespace GodotMonoGeneral.Logic.ECS;
+namespace GodotMonoGeneral.Logic;
 
 public class ECSWorld
 {
@@ -150,6 +150,48 @@ public class ECSWorld
             sparses.Add(sparse);
             sparse.LoadSnapshot(item);
         }
+    }
+
+    /// <summary>
+    /// 获取存档路径。
+    /// </summary>
+    /// <param name="index">存档索引</param>
+    /// <returns>路径字符串</returns>
+    private string GetSavePath(int index)
+    {
+        return $"res://Saves/{index}.save";
+    }
+
+    /// <summary>
+    /// 加载指定索引的存档。
+    /// </summary>
+    /// <param name="index">存档索引</param>
+    public void LoadSave(int index)
+    {
+        if (index < 0)
+        {
+            return;
+        }
+        var path = GetSavePath(index);
+        var snapshot = IOHelper.ReadJson<ECSSnapshot>(path);
+        LoadSnapshot(snapshot);
+        EventBus.Raise("load_save", index); // 发送事件。
+    }
+
+    /// <summary>
+    /// 保存游戏到指定存档。
+    /// </summary>
+    /// <param name="index">存档索引</param>
+    public void SaveGame(int index)
+    {
+        if (index < 0)
+        {
+            return;
+        }
+        var path = GetSavePath(index);
+        var snapshot = GetSnapshot();
+        IOHelper.WriteJson(snapshot, path);
+        EventBus.Raise("save_game", index); // 发送事件。
     }
    
 }

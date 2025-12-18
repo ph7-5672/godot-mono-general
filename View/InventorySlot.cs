@@ -1,7 +1,5 @@
-using System;
 using Godot;
 using GodotMonoGeneral.Logic;
-using GodotMonoGeneral.Logic.ECS;
 using GodotMonoGeneral.Utils;
 
 namespace GodotMonoGeneral.View;
@@ -11,52 +9,95 @@ namespace GodotMonoGeneral.View;
 /// </summary>
 public partial class InventorySlot : Control
 {
-    [Export]
-    Label countLabel;
-    [Export]
-    Label idLabel;
-    [Export]
-    int capacity;
+    /// <summary>
+    /// 数量文字节点。
+    /// </summary>
+    [Export] Label countLabel;
+    /// <summary>
+    /// 名称文字节点。
+    /// </summary>
+    [Export] Label nameLabel;
+    /// <summary>
+    /// 容量配置。为0表示无上限。
+    /// </summary>
+    [Export] int capacity;
 
-    int inventoryId = -1;
-    int slotId = -1;
-
-    public override void _EnterTree()
+    int InventoryId
     {
-        base._EnterTree();
-        Action<int> handler = (index) => {Refresh();};
-        EventBus.Subscribe("load_save", handler);
+        get
+        {
+            return GetParent().GetMeta("entityId").AsInt32();
+        }
+        set
+        {
+            GetParent().SetMeta("entityId", value);
+        }
     }
+
+    int SlotId
+    {
+        get
+        {
+            return GetMeta("entityId").AsInt32();
+        }
+        set
+        {
+            SetMeta("entityId", value);
+        }
+    }
+
+    readonly ECSWorld World = SingletonFactory.GetSingleton<ECSWorld>();
 
     public override void _Ready()
     {
         base._Ready();
-        // 注册格子数据。
         var parent = GetParent();
-        if (!parent.HasMeta("inventoryId")) // 以父节点的元数据作为数据共享。
+        if (!parent.HasMeta("owner"))
         {
-            var inventory = LogicFacade.CreateInventory();
-            parent.SetMeta("inventoryId", inventory);
+            return;
         }
-        inventoryId = parent.GetMeta("inventoryId").AsInt32();
-        slotId = LogicFacade.CreateSlot(inventoryId, capacity); // 创建单个格子实体。
-        ref var data = ref LogicFacade.World.GetComponent<SlotData>(slotId); // 编辑格子数据。
-        data.index = GetIndex();  // 同步索引。
+        if (!parent.HasMeta("entityId")) // 以父节点的元数据作为数据共享。
+        {
+            var ownerPath = parent.GetMeta("owner").AsNodePath();
+            var owner = parent.GetNode(ownerPath);
+            // 父节点没有meta数据时，懒加载新的仓库数据。
+            InventoryId = World.CreateEntity();
+            var inventoryData = new InventoryData()
+            {
+                ownerId = owner.GetMeta("entityId").AsInt32(),
+                name = parent.GetMeta("inventoryName").AsString(),
+            };
+            World.AddComponent(InventoryId, ref inventoryData);
+        }
+        // 创建单个格子实体。
+        SlotId = World.CreateEntity(); 
+        var slotData = new SlotData()
+        {
+            inventoryId = InventoryId,
+            itemId = -1,
+            count = 0,
+            capacity = capacity,
+            index = GetIndex()
+        }; // 格子数据。
+        World.AddComponent(SlotId, ref slotData); // 添加组件。
         CallDeferred("Refresh");
     }
 
     public void Refresh()
     {
-        if (inventoryId == -1 || slotId == -1)
+        if (InventoryId == -1 || SlotId == -1)
         {
             return;
         }
-        var data = LogicFacade.World.GetComponent<SlotData>(slotId); // 查询数据。
-        if (data.count > 0 && data.itemId != -1) // 物品数量为0或者没有物品时不显示。
+        var data = World.GetComponent<SlotData>(SlotId); // 查询数据。
+        if (data.count > 1) // 物品数量超过1时才显示数量。
         {
             countLabel.Text = data.count.ToString();
-            idLabel.Text = data.itemId.ToString();
         }
+        // if (Game.ItemDict.TryGetValue(data.itemId, out var item))
+        // {
+        //     nameLabel.Text = item.itemName; // 显示物品名称。
+        // }
     }
 
 }

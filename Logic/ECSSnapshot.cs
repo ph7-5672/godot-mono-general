@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace GodotMonoGeneral.Logic.ECS;
+namespace GodotMonoGeneral.Logic;
 
 /// <summary>
 /// ECS快照信息。

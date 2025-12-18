@@ -1,4 +1,4 @@
-namespace GodotMonoGeneral.Logic.ECS;
+namespace GodotMonoGeneral.Logic;
 
 using System;
 using System.Collections.Generic;

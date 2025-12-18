@@ -1,5 +1,5 @@
 
-namespace GodotMonoGeneral.Logic.ECS;
+namespace GodotMonoGeneral.Logic;
 
 public interface ISparseSet
 {
